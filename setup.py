@@ -26,7 +26,7 @@ def main():
         install_requires=["aiohttp", "lxml"],
         license='GPLv3',
         classifiers=[
-            "Framework :: nonebot2",
+            "Framework :: asyncio",
             "Operating System :: OS Independent",
             "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
             "Programming Language :: Python",
