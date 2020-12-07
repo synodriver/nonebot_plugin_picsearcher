@@ -1,5 +1,5 @@
 # nonebot_plugin_picsearcher
-[![pypi](https://img.shields.io/pypi/v/nonebot_plugin_picsearcher.svg)](https://pypi.org/project/nonebot_plugin_picsearcher/) ![python](https://img.shields.io/badge/python-3.7+-blue.svg)
+[![pypi](https://img.shields.io/pypi/v/nonebot-plugin-picsearcher.svg)](https://pypi.org/project/nonebot_plugin_picsearcher/) ![python](https://img.shields.io/badge/python-3.7+-blue.svg)
 ![license](https://img.shields.io/github/license/synodriver/nonebot_plugin_picsearcher.svg)
 
 - 基于[nonebot2](https://github.com/nonebot/nonebot2)
