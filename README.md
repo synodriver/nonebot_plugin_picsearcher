@@ -6,7 +6,7 @@
 
 ## 功能
 
-- 从各个接口查找色图来源
+- 从各个接口查找色图来源,目前支持ascii2d exhentai iqdb saucenao trace.moe
 
 ## 开始使用
 
