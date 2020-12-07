@@ -13,7 +13,6 @@ headers = {
     'Accept-Encoding': 'gzip, deflate', 'Accept-Language': 'zh-CN,zh;q=0.9', 'Cache-Control': 'max-age=0',
     'Connection': 'keep-alive',
     'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryuwjSiBcpPag4k159',
-    'Cookie': 'Hm_lvt_765ecde8c11b85f1ac5f168fa6e6821f=1602471368; Hm_lpvt_765ecde8c11b85f1ac5f168fa6e6821f=1602472300',
     'Host': 'iqdb.org', 'Origin': 'http://iqdb.org', 'Referer': 'http://iqdb.org/', 'Upgrade-Insecure-Requests': '1',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36'}
 

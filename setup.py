@@ -23,7 +23,7 @@ def main():
         author="synodriver",
         author_email="diguohuangjiajinweijun@gmail.com",
         python_requires=">=3.6",
-        install_requires=["aiohttp"],
+        install_requires=["aiohttp", "lxml"],
         license='GPLv3',
         classifiers=[
             "Framework :: nonebot2",
