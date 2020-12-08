@@ -21,7 +21,7 @@
 pip install nonebot-plugin-picsearcher
 ```
 
-- 在 nonebot2 项目中设置 load\_plugin()
+- 在 nonebot2 项目中设置 load_plugin()
 
 ``` {.sourceCode .python}
 nonebot.load_plugin('nonebot_plugin_picsearcher')
@@ -70,4 +70,5 @@ class FormData:
 
 ## 优化建议
 
-可以来抓更多网站的接口or汇报bug
+可以来抓更多网站的接口or汇报bug or pr
+![](https://i.pixiv.cat/img-original/img/2019/08/07/00/13/37/76116742_p0.png "呐呐呐,来pr的话~就给大哥哥透噢")
