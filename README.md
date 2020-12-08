@@ -1,5 +1,8 @@
 # nonebot_plugin_picsearcher
-[![pypi](https://img.shields.io/pypi/v/nonebot-plugin-picsearcher.svg)](https://pypi.org/project/nonebot_plugin_picsearcher/) ![python](https://img.shields.io/badge/python-3.7+-blue.svg)
+[![pypi](https://img.shields.io/pypi/v/nonebot-plugin-picsearcher.svg)](https://pypi.org/project/nonebot_plugin_picsearcher/) 
+![implementation](https://img.shields.io/pypi/implementation/nonebot-plugin-picsearcher)
+![wheel](https://img.shields.io/pypi/wheel/nonebot-plugin-picsearcher)
+![python](https://img.shields.io/pypi/pyversions/nonebot-plugin-picsearcher)
 [![license](https://img.shields.io/github/license/synodriver/nonebot_plugin_picsearcher.svg)](https://raw.githubusercontent.com/synodriver/nonebot_plugin_picsearcher/main/LICENSE)
 
 - 基于[nonebot2](https://github.com/nonebot/nonebot2)
@@ -25,6 +28,7 @@ nonebot.load_plugin('nonebot_plugin_picsearcher')
 ```
 
 - 参照下文在 nonebot2 项目的环境文件 .env.\* 中添加配置项
+- 使用时at搜图即可
 
 ## 配置项
 
