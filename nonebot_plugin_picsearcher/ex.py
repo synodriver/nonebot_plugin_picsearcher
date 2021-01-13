@@ -19,7 +19,6 @@ headers = {
     'Cache-Control': 'max-age=0',
     'Connection': 'keep-alive',
     'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryB0NrMSYMfjY5r0l1',
-    'Cookie': cookie,
     'Host': 'exhentai.org',
     'Origin': 'https://exhentai.org',
     'Referer': 'https://exhentai.org/?filesearch=1',
@@ -29,6 +28,14 @@ headers = {
     'Sec-Fetch-User': '?1',
     'Upgrade-Insecure-Requests': '1',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36'}
+
+if cookie:
+    headers['Cookie'] = "cookie"
+else:
+    headers['Host'] = 'e-hentai.org'
+    headers['Origin'] = 'https://e-hentai.org'
+    headers['Referer'] = 'https://e-hentai.org/?filesearch=1'
+    target: str = "https://e-hentai.org/upload/image_lookup.php"
 
 
 def parse_html(html: str):
