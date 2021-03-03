@@ -32,36 +32,25 @@ nonebot.load_plugin('nonebot_plugin_picsearcher')
 
 ## 配置项
 
-由于[exhentai](https://exhentai.org)的接口需要cookie,因此需要在配置文件
-中加入如下选项
+由于[exhentai](https://exhentai.org)的接口需要cookie~~以及fq~~，因此需要在配置文件
+中加入如下选项，没有设置COOKIE时会回退到eh~~有些loli本就搜不到了~~
 ```
 EX_COOKIE=XXXXX
+PROXY=XXXX  # type: str e.g. PROXY=http://127.0.0.1:8889
 ```
 
 ## 特别注意
 - 由于aiohttp的某些神奇实现,默认的FormData类需要被稍微*调教*一下
-``` {.sourceCode .python}
-# 在\site-packages\aiohttp\formdata.py
-class FormData:
-    """Helper class for multipart/form-data and
-    application/x-www-form-urlencoded body generation."""
+- 但是**在v0.1.4由本地的patch代替了改库的过程,动不动库无所谓了**
 
-    def __init__(self, fields:
-                 Iterable[Any]=(),
-                 quote_fields: bool=True,
-                 charset: Optional[str]=None,
-                 boundary: Optional[str]=None) -> None:
-        self._writer = multipart.MultipartWriter('form-data', boundary=boundary)
-        self._fields = []  # type: List[Any]
-        self._is_multipart = False
-        self._quote_fields = quote_fields
-        self._charset = charset
-```
-- 以上,给他加一个参数(该操作不会影响其他包 ~~纯粹是 [aiolibs](https://github.com/aio-libs) 的人懒~~)
-
-## 不魔改aiohttp会怎样?
+## 没有aiohttp的patch会怎样?
 
 那得问问那些网站愿不愿意了()
+
+## 下一阶段目标
+
+- Yandex? Maybe
+
 
 ## 特别感谢
 

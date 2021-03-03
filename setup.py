@@ -5,7 +5,7 @@ packages = find_packages(exclude=('test', 'tests.*', "test*"))
 
 
 def get_dis():
-    with open("README.md", "r", encoding="utf-8") as f:
+    with open("README.markdown", "r", encoding="utf-8") as f:
         return f.read()
 
 
@@ -13,7 +13,7 @@ def main():
     dis = get_dis()
     setup(
         name="nonebot-plugin-picsearcher",
-        version="0.1.2",
+        version="0.1.4",
         url="https://github.com/synodriver/nonebot_plugin_picsearcher",
         packages=packages,
         keywords=["nonebot"],

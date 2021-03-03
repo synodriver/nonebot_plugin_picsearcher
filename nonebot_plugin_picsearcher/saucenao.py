@@ -6,6 +6,8 @@ import aiohttp
 from lxml.html import fromstring
 from nonebot.adapters.cqhttp import MessageSegment
 
+from .formdata import FormData
+
 header = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'Accept-Encoding': 'gzip, deflate', 'Accept-Language': 'zh-CN,zh;q=0.9',
@@ -56,7 +58,7 @@ def parse_html(html: str):
             member = member[0]
         else:
             member = "没有说"
-        yield (pic_url, xsd, title, pixiv_id, member)
+        yield pic_url, xsd, title, pixiv_id, member
 
 
 async def get_pic_from_url(url: str):
@@ -68,7 +70,7 @@ async def get_pic_from_url(url: str):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             content = io.BytesIO(await resp.read())
-        data = aiohttp.FormData(boundary="----WebKitFormBoundaryPpuR3EZ1Ap2pXv8W")
+        data = FormData(boundary="----WebKitFormBoundaryPpuR3EZ1Ap2pXv8W")
         data.add_field(name="file", value=content, content_type="image/jpeg",
                        filename="blob")
         async with session.post("https://saucenao.com/search.php", data=data, headers=header) as res:

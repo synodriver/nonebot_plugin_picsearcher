@@ -8,11 +8,14 @@ from lxml.html import fromstring
 import aiohttp
 from nonebot.adapters.cqhttp import MessageSegment
 
+from .formdata import FormData
+
 headers = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'Accept-Encoding': 'gzip, deflate', 'Accept-Language': 'zh-CN,zh;q=0.9', 'Cache-Control': 'max-age=0',
     'Connection': 'keep-alive',
     'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryuwjSiBcpPag4k159',
+    'Cookie': 'Hm_lvt_765ecde8c11b85f1ac5f168fa6e6821f=1602471368; Hm_lpvt_765ecde8c11b85f1ac5f168fa6e6821f=1602472300',
     'Host': 'iqdb.org', 'Origin': 'http://iqdb.org', 'Referer': 'http://iqdb.org/', 'Upgrade-Insecure-Requests': '1',
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36'}
 
@@ -43,7 +46,7 @@ async def get_pic_from_url(url: str):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             content = io.BytesIO(await resp.read())
-        data = aiohttp.FormData(boundary="----WebKitFormBoundaryuwjSiBcpPag4k159")
+        data = FormData(boundary="----WebKitFormBoundaryuwjSiBcpPag4k159")
         data.add_field(name="MAX_FILE_SIZE", value="")
         for i in range(1, 7):
             data.add_field(name="service[]", value=str(i))

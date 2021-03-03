@@ -9,9 +9,13 @@ import nonebot
 from aiohttp.client_exceptions import InvalidURL
 from nonebot.adapters.cqhttp import MessageSegment
 
+from .formdata import FormData
+
 driver = nonebot.get_driver()
-cookie = driver.config.ex_cookie
+cookie: str = driver.config.ex_cookie
+proxy: str = driver.config.proxy
 target: str = "https://exhentai.org/upload/image_lookup.php"
+
 headers = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'Accept-Encoding': 'gzip, deflate',
@@ -62,12 +66,12 @@ async def get_pic_from_url(url: str):
         async with session.get(url) as resp:
             content = io.BytesIO(await resp.read())
             # Content_Length = resp.content_length
-        data = aiohttp.FormData(boundary="----WebKitFormBoundaryB0NrMSYMfjY5r0l1")
+        data = FormData(boundary="----WebKitFormBoundaryB0NrMSYMfjY5r0l1")
         data.add_field(name="sfile", value=content, content_type="image/jpeg",
                        filename="0.jpg")
         data.add_field(name="f_sfile", value="search")
         data.add_field(name="fs_similar", value="on")
-        async with session.post(target, data=data, headers=headers) as res:
+        async with session.post(target, data=data, headers=headers, proxy=proxy) as res:
             html = await res.text()
         return [i for i in parse_html(html)]
 
