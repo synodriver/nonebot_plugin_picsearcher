@@ -1,0 +1,6 @@
+/dist/
+/build/
+*.pyd
+*.so
+*.dll
+*.exe

@@ -22,7 +22,7 @@ def main():
         long_description=dis,
         author="synodriver",
         author_email="diguohuangjiajinweijun@gmail.com",
-        python_requires=">=3.6",
+        python_requires=">=3.7",
         install_requires=["aiohttp", "lxml"],
         license='GPLv3',
         classifiers=[

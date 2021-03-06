@@ -47,6 +47,13 @@ PROXY=XXXX  # type: str e.g. PROXY=http://127.0.0.1:8889
 
 那得问问那些网站愿不愿意了()
 
+## 更新日志
+- v0.1.4
+    - 修复了formdata手动改库的问题，改为就地hook aiohttp
+    - 加入了新功能，可以直接查询已经存在的上一张图而不用at
+
+
+
 ## 下一阶段目标
 
 - Yandex? Maybe
