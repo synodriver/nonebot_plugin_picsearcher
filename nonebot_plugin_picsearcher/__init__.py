@@ -13,6 +13,7 @@ from .iqdb import get_des as get_des_iqdb
 from .saucenao import get_des as get_des_sau
 from .ascii2d import get_des as get_des_asc
 from .trace import get_des as get_des_trace
+from .yandex import get_des as get_des_yandex
 
 
 async def get_des(url: str, mode: str):
@@ -29,6 +30,9 @@ async def get_des(url: str, mode: str):
             yield msg
     elif mode == "trace":
         async for msg in get_des_trace(url):
+            yield msg
+    elif mode == "yandex":
+        async for msg in get_des_yandex(url):
             yield msg
     elif mode.startswith("asc"):
         async for msg in get_des_asc(url):

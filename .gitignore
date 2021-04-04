@@ -1,6 +1,10 @@
 /dist/
 /build/
+/.idea/
+*.html
 *.pyd
+*.pyc
+*.pyo
 *.so
 *.dll
 *.exe
