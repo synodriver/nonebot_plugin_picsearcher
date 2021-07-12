@@ -39,19 +39,14 @@ EX_COOKIE=XXXXX
 PROXY=XXXX  # type: str e.g. PROXY=http://127.0.0.1:8889
 ```
 
-## 特别注意
-- 由于aiohttp的某些神奇实现,默认的FormData类需要被稍微*调教*一下
-- 但是**在v0.1.4由本地的patch代替了改库的过程,动不动库无所谓了**
-
-## 没有aiohttp的patch会怎样?
-
-那得问问那些网站愿不愿意了()
-
 ## 更新日志
 - v0.1.4
     - 修复了formdata手动改库的问题，改为就地hook aiohttp
-    - 加入了新功能，可以直接查询已经存在的上一张图而不用at
-
+    - yandex搜图
+  
+- v0.1.5rc1
+    - 加入可选的`search_limit`配置项，确认一次搜索的显示结果数量，默认`2`
+    - 加入可选的`proxy`选项
 
 
 ## 下一阶段目标

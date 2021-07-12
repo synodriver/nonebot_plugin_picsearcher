@@ -6,6 +6,8 @@ from lxml.html import fromstring
 import aiohttp
 from nonebot.adapters.cqhttp import MessageSegment
 
+from .proxy import proxy
+
 
 def parse_html(html: str):
     selector = fromstring(html)
@@ -28,7 +30,7 @@ def parse_html(html: str):
 async def get_pic_from_url(url: str):
     real_url = "https://ascii2d.net/search/url/" + url
     async with aiohttp.ClientSession() as session:
-        async with session.get(real_url) as resp:
+        async with session.get(real_url, proxy=proxy) as resp:
             html: str = await resp.text()
         return [i for i in parse_html(html)]
 

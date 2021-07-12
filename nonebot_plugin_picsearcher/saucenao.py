@@ -7,6 +7,7 @@ from lxml.html import fromstring
 from nonebot.adapters.cqhttp import MessageSegment
 
 from .formdata import FormData
+from .proxy import proxy
 
 header = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -73,7 +74,7 @@ async def get_pic_from_url(url: str):
         data = FormData(boundary="----WebKitFormBoundaryPpuR3EZ1Ap2pXv8W")
         data.add_field(name="file", value=content, content_type="image/jpeg",
                        filename="blob")
-        async with session.post("https://saucenao.com/search.php", data=data, headers=header) as res:
+        async with session.post("https://saucenao.com/search.php", data=data, headers=header, proxy=proxy) as res:
             html = await res.text()
             image_data = [each for each in parse_html(html)]
     return image_data
@@ -90,4 +91,3 @@ async def get_des(url: str):
             file=pic[0]) + f"\n相似度:{pic[1]}\n标题:{pic[2]}\npixivid:{pic[3]}\nmember:{pic[4]}\n"
         yield msg
     pass
-

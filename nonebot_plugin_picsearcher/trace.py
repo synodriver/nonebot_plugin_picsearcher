@@ -8,6 +8,8 @@ from typing import List, Tuple
 import aiohttp
 from nonebot.adapters.cqhttp import MessageSegment
 
+from .proxy import proxy
+
 header = {':authority': 'api.trace.moe',
           'accept': '*/*',
           'accept-encoding': 'gzip, deflate, br',
@@ -61,7 +63,7 @@ async def get_pic_from_url(url: str):
         # data.add_field(name="filter", value="")
         # data.add_field(name="trial", value="0")
         async with session.post("https://api.trace.moe/search?cutBorders=1&anilistID=", data=data,
-                                headers=header) as res:
+                                headers=header, proxy=proxy) as res:
             data: dict = await res.json()
             image_data = [each async for each in parse_json(session, data)]
     return image_data

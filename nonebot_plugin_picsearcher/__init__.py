@@ -15,6 +15,8 @@ from .ascii2d import get_des as get_des_asc
 from .trace import get_des as get_des_trace
 from .yandex import get_des as get_des_yandex
 
+from .utils import limiter
+
 
 async def get_des(url: str, mode: str):
     """
@@ -70,7 +72,7 @@ async def get_setu(bot: Bot, event: MessageEvent, state: T_State):
         if msg[0].type == "image":
             await bot.send(event=event, message="正在处理图片")
             url = msg[0].data["url"]  # 图片链接
-            async for msg in get_des(url, mod):
+            async for msg in limiter(get_des(url, mod), bot.config.search_limit or 2):
                 await bot.send(event=event, message=msg)
             # image_data: List[Tuple] = await get_pic_from_url(url)
             await setu.finish("hso")
@@ -81,7 +83,7 @@ async def get_setu(bot: Bot, event: MessageEvent, state: T_State):
         await setu.finish("参数错误")
 
 
-pic_map: Dict[str, str] = {}  # 保存这个群的其阿金一张色图 {"123456":http://xxx"}
+pic_map: Dict[str, str] = {}  # 保存这个群的上一张色图 {"123456":"http://xxx"}
 
 
 async def check_pic(bot: Bot, event: MessageEvent, state: T_State) -> bool:
@@ -114,7 +116,7 @@ async def handle_previous(bot: Bot, event: GroupMessageEvent, state: T_State):
     await bot.send(event=event, message="processing...")
     try:
         url: str = pic_map[str(event.group_id)]
-        async for msg in get_des(url, "nao"):
+        async for msg in limiter(get_des(url, "nao"), bot.config.search_limit or 2):
             await bot.send(event=event, message=msg)
     except (IndexError, ClientError):
         await bot.send(event, traceback.format_exc())

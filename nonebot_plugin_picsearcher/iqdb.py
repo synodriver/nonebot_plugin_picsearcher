@@ -9,6 +9,7 @@ import aiohttp
 from nonebot.adapters.cqhttp import MessageSegment
 
 from .formdata import FormData
+from .proxy import proxy
 
 headers = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -34,8 +35,6 @@ def parse_html(html: str):
         href = list(map(lambda x: "https:" + x if not x.startswith("https") else x, href))
         yield pic_url, similarity, href
 
-    pass
-
 
 async def get_pic_from_url(url: str):
     """
@@ -54,7 +53,7 @@ async def get_pic_from_url(url: str):
         data.add_field(name="service[]", value="13")
         data.add_field(name="file", value=content, content_type="application/octet-stream", filename="0.jpg")
         data.add_field(name="url", value="")
-        async with session.post("http://iqdb.org/", data=data, headers=headers) as res:
+        async with session.post("http://iqdb.org/", data=data, headers=headers, proxy=proxy) as res:
             html = await res.text()
         return [i for i in parse_html(html)]
     pass
@@ -76,4 +75,3 @@ async def get_des(url: str):
         for i in pic[2]:
             msg = msg + f"{i}\n"
         yield msg
-
