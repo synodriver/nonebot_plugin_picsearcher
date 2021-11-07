@@ -13,7 +13,7 @@ def main():
     dis = get_dis()
     setup(
         name="nonebot-plugin-picsearcher",
-        version="0.1.5rc1",
+        version="0.1.5",
         url="https://github.com/synodriver/nonebot_plugin_picsearcher",
         packages=packages,
         keywords=["nonebot"],
@@ -32,6 +32,8 @@ def main():
             "Programming Language :: Python",
             "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: 3.8",
+            "Programming Language :: Python :: 3.9",
+            "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: Implementation :: CPython"
         ],
         include_package_data=True
