@@ -39,7 +39,7 @@ else:
     headers['Host'] = 'e-hentai.org'
     headers['Origin'] = 'https://e-hentai.org'
     headers['Referer'] = 'https://e-hentai.org/?filesearch=1'
-    target: str = "https://e-hentai.org/upload/image_lookup.php"
+    target: str = "https://upld.e-hentai.org/image_lookup.php"
 
 
 def parse_html(html: str):
