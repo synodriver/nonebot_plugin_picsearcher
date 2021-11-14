@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import traceback
 from typing import Dict
+import json
 
 from aiohttp.client_exceptions import ClientError
 from nonebot.plugin import on_command, on_message
 from nonebot.rule import to_me
 from nonebot.adapters.cqhttp import Bot, MessageEvent, GroupMessageEvent, PrivateMessageEvent, Message
 from nonebot.typing import T_State
+from nonebot.utils import DataclassEncoder
 
 from .ex import get_des as get_des_ex
 from .iqdb import get_des as get_des_iqdb
@@ -138,11 +140,11 @@ async def handle_previous(bot: Bot, event: GroupMessageEvent, state: T_State):
     try:
         url: str = pic_map[str(event.group_id)]
         if not bot.config.risk_control:  # 安全模式
-            async for msg in limiter(get_des(url, mod), bot.config.search_limit or 2):
+            async for msg in limiter(get_des(url, "nao"), bot.config.search_limit or 2):
                 await bot.send(event=event, message=msg)
         else:
             msgs: Message = sum(
-                [msg if isinstance(msg, Message) else Message(msg) async for msg in get_des(url, mod)])
+                [msg if isinstance(msg, Message) else Message(msg) async for msg in get_des(url, "nao")])
             dict_data = json.loads(json.dumps(msgs, cls=DataclassEncoder))
             await bot.send_group_forward_msg(group_id=event.group_id,
                                              messages=[
