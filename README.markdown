@@ -18,7 +18,7 @@
 - 通过 pip 从 [PyPI](https://pypi.org/project/nonebot_plugin_picsearcher/) 安装
 
 ``` {.sourceCode .bash}
-pip install nonebot-plugin-picsearcher
+pip install nonebot-plugin-picsearcher==0.1.6rc2
 ```
 
 - 在 nonebot2 项目中设置 load_plugin()
@@ -52,6 +52,9 @@ RISK_CONTROL=true # 风控模式 启动后会使用合并转发 只有gocq有实
 
 - v0.1.6rc1
     - 手残的代价（
+
+- v0.1.6rc2
+    - 支持nb2.beta1， 需要onebot adapter
 
 ## 下一阶段目标
 

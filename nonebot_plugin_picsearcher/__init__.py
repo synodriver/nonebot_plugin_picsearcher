@@ -4,9 +4,11 @@ from typing import Dict
 import json
 
 from aiohttp.client_exceptions import ClientError
+
+from nonebot.params import State, ArgPlainText, Arg, CommandArg
 from nonebot.plugin import on_command, on_message
 from nonebot.rule import to_me
-from nonebot.adapters.cqhttp import Bot, MessageEvent, GroupMessageEvent, PrivateMessageEvent, Message
+from nonebot.adapters.onebot.v11 import Bot, MessageEvent, GroupMessageEvent, PrivateMessageEvent, Message
 from nonebot.typing import T_State
 from nonebot.utils import DataclassEncoder
 
@@ -50,26 +52,25 @@ setu = on_command("搜图", aliases={"search"}, rule=to_me())
 
 
 @setu.handle()
-async def handle_first_receive(bot: Bot, event: MessageEvent, state: T_State):
-    msg = event.message
-    if msg:
-        state["setu"] = msg
-    pass
+async def handle_first_receive(event: MessageEvent, state: T_State = State(), setu: Message = CommandArg()):
+    if setu:
+        state["setu"] = setu
 
 
 @setu.got("mod", prompt="从哪里查找呢? ex/nao/trace/iqdb/ascii2d")
-async def get_func(bot: Bot, event: MessageEvent, state: dict):
+async def get_func():
     pass
 
 
 @setu.got("setu", prompt="图呢？")
-async def get_setu(bot: Bot, event: MessageEvent, state: T_State):
+async def get_setu(bot: Bot,
+                   event: MessageEvent,
+                   mod: str = ArgPlainText("mod"),
+                   msg: Message = Arg("setu")):
     """
     发现没有的时候要发问
     :return:
     """
-    msg: Message = Message(state["setu"])
-    mod: str = state["mod"]  # 模式
     try:
         if msg[0].type == "image":
             await bot.send(event=event, message="正在处理图片")
@@ -109,7 +110,7 @@ async def get_setu(bot: Bot, event: MessageEvent, state: T_State):
 pic_map: Dict[str, str] = {}  # 保存这个群的上一张色图 {"123456":"http://xxx"}
 
 
-async def check_pic(bot: Bot, event: MessageEvent, state: T_State) -> bool:
+async def check_pic(bot: Bot, event: MessageEvent, state: T_State = State()) -> bool:
     if isinstance(event, MessageEvent):
         for msg in event.message:
             if msg.type == "image":
@@ -123,7 +124,7 @@ notice_pic = on_message(check_pic)
 
 
 @notice_pic.handle()
-async def handle_pic(bot: Bot, event: GroupMessageEvent, state: T_State):
+async def handle_pic(event: GroupMessageEvent, state: T_State = State()):
     try:
         group_id: str = str(event.group_id)
         pic_map.update({group_id: state["url"]})
@@ -135,7 +136,7 @@ previous = on_command("上一张图是什么", aliases={"上一张", "这是什�
 
 
 @previous.handle()
-async def handle_previous(bot: Bot, event: GroupMessageEvent, state: T_State):
+async def handle_previous(bot: Bot, event: GroupMessageEvent):
     await bot.send(event=event, message="processing...")
     try:
         url: str = pic_map[str(event.group_id)]

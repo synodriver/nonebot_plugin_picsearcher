@@ -6,7 +6,7 @@ import io
 from urllib.parse import urljoin
 from lxml.html import fromstring
 import aiohttp
-from nonebot.adapters.cqhttp import MessageSegment
+from nonebot.adapters.onebot.v11 import MessageSegment
 
 from .formdata import FormData
 from .proxy import proxy

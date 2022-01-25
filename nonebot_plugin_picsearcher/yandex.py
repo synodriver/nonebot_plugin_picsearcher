@@ -2,7 +2,7 @@
 from typing import List, Tuple
 
 import nonebot
-from nonebot.adapters.cqhttp import MessageSegment
+from nonebot.adapters.onebot.v11 import MessageSegment
 from lxml.html import fromstring
 import aiohttp
 

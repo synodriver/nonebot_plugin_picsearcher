@@ -4,7 +4,7 @@ from urllib.parse import urljoin
 
 from lxml.html import fromstring
 import aiohttp
-from nonebot.adapters.cqhttp import MessageSegment
+from nonebot.adapters.onebot.v11 import MessageSegment
 
 from .proxy import proxy
 
