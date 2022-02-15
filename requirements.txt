@@ -1,0 +1,4 @@
+aiohttp
+lxml
+nonebot2
+nonebot-adapter-onebot

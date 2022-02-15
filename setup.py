@@ -13,7 +13,7 @@ def main():
     dis = get_dis()
     setup(
         name="nonebot-plugin-picsearcher",
-        version="0.1.6rc2",
+        version="0.1.7",
         url="https://github.com/synodriver/nonebot_plugin_picsearcher",
         packages=packages,
         keywords=["nonebot"],
@@ -23,7 +23,7 @@ def main():
         author="synodriver",
         author_email="diguohuangjiajinweijun@gmail.com",
         python_requires=">=3.7",
-        install_requires=["aiohttp", "lxml"],
+        install_requires=["aiohttp", "lxml", "nonebot2", "nonebot-adapter-onebot"],
         license='GPLv3',
         classifiers=[
             "Framework :: AsyncIO",

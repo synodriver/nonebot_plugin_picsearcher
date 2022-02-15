@@ -11,7 +11,7 @@ http://yandex.com/clck/jsredir?from=yandex.com%3Bimages%2Fsearch%3Bimages%3B%3B&
 """
 
 driver = nonebot.get_driver()
-proxy: str = driver.config.proxy
+proxy: str = getattr(driver.config, "proxy", None)
 
 
 def parse_html(html: str):

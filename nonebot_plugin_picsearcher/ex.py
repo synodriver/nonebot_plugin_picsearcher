@@ -12,8 +12,8 @@ from nonebot.adapters.onebot.v11 import MessageSegment
 from .formdata import FormData
 
 driver = nonebot.get_driver()
-cookie: str = driver.config.ex_cookie
-proxy: str = driver.config.proxy
+cookie: str = getattr(driver.config, "ex_cookie", None)
+proxy: str = getattr(driver.config, "proxy", None)
 target: str = "https://exhentai.org/upload/image_lookup.php"
 
 headers = {
