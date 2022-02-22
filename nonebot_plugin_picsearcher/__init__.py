@@ -120,7 +120,7 @@ async def check_pic(bot: Bot, event: MessageEvent, state: T_State = State()) -> 
         return False
 
 
-notice_pic = on_message(check_pic)
+notice_pic = on_message(check_pic,block=False, priority=90)
 
 
 @notice_pic.handle()
