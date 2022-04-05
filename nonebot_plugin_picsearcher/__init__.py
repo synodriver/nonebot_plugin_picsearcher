@@ -122,10 +122,10 @@ async def check_pic(bot: Bot, event: MessageEvent, state: T_State = State()) -> 
         return False
 
 
-notice_pic = on_message(check_pic)
+notice_pic = on_message(check_pic，priority=global_config.record_priority)
 
 
-@notice_pic.handle(priority=global_config.search_priority)
+@notice_pic.handle()
 async def handle_pic(event: GroupMessageEvent, state: T_State = State()):
     try:
         group_id: str = str(event.group_id)
