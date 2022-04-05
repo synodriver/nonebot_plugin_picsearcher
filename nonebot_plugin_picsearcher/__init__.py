@@ -122,7 +122,7 @@ async def check_pic(bot: Bot, event: MessageEvent, state: T_State = State()) -> 
         return False
 
 
-notice_pic = on_message(check_pic, priority=global_config.record_priority)
+notice_pic = on_message(check_pic, block=False, priority=global_config.record_priority)
 
 
 @notice_pic.handle()
