@@ -23,6 +23,7 @@ from .yandex import get_des as get_des_yandex
 from .utils import limiter
 
 global_config = get_driver().config
+record_priority = global_config.record_priority if global_config.record_priority else 99
 
 async def get_des(url: str, mode: str):
     """
@@ -122,7 +123,7 @@ async def check_pic(bot: Bot, event: MessageEvent, state: T_State = State()) -> 
         return False
 
 
-notice_pic = on_message(check_pic, block=False, priority=global_config.record_priority)
+notice_pic = on_message(check_pic, block=False, priority=record_priority)
 
 
 @notice_pic.handle()
