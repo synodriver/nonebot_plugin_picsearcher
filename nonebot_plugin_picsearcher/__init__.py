@@ -23,7 +23,10 @@ from .yandex import get_des as get_des_yandex
 from .utils import limiter
 
 global_config = get_driver().config
-record_priority = global_config.record_priority if global_config.record_priority else 99
+try:
+    record_priority = global_config.record_priority if global_config.record_priority else 99
+except:
+    record_priority = 99
 
 async def get_des(url: str, mode: str):
     """
