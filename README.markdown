@@ -39,6 +39,7 @@ EX_COOKIE=XXXXX
 PROXY=XXXX  # type: str e.g. PROXY=http://127.0.0.1:8889
 SEARCH_LIMIT=2  # 搜索限制 防刷屏
 RISK_CONTROL=true # 风控模式 启动后会使用合并转发 只有gocq有实现
+RECORD_PRIORITY=99 # 记录上一张图片matcher的优先级，与 上一张 命令有关
 ```
 
 ## 更新日志

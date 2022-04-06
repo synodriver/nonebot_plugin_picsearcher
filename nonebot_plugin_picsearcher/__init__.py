@@ -5,6 +5,7 @@ import json
 
 from aiohttp.client_exceptions import ClientError
 
+from nonebot import get_driver
 from nonebot.params import State, ArgPlainText, Arg, CommandArg
 from nonebot.plugin import on_command, on_message
 from nonebot.rule import to_me
@@ -21,6 +22,8 @@ from .yandex import get_des as get_des_yandex
 
 from .utils import limiter
 
+global_config = get_driver().config
+record_priority = global_config.record_priority if global_config.record_priority else 99
 
 async def get_des(url: str, mode: str):
     """
@@ -120,7 +123,7 @@ async def check_pic(bot: Bot, event: MessageEvent, state: T_State = State()) -> 
         return False
 
 
-notice_pic = on_message(check_pic)
+notice_pic = on_message(check_pic, block=False, priority=record_priority)
 
 
 @notice_pic.handle()
