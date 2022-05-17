@@ -7,6 +7,8 @@ from typing import List, Tuple
 import aiohttp
 from nonebot.adapters.onebot.v11 import MessageSegment
 
+from .formdata import FormData
+
 header = {':authority': 'api.trace.moe',
           'accept': '*/*',
           'accept-encoding': 'gzip, deflate, br',
@@ -70,7 +72,7 @@ async def get_pic_from_url(url: str):
             content = io.BytesIO(await resp.read())
         # with open("F:\elu.PNG", "rb") as f:
         #     content = io.BytesIO(f.read())
-        data = aiohttp.FormData(boundary="----WebKitFormBoundary9cyjY8YBBN8SGdG4")
+        data = FormData(boundary="----WebKitFormBoundary9cyjY8YBBN8SGdG4")
         data.add_field(name="image", value=content, content_type="image/jpeg",
                        filename="blob")
         # data.add_field(name="filter", value="")
