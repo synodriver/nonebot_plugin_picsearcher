@@ -30,7 +30,7 @@ async def get_pic_from_url(url: str):
     async with aiohttp.ClientSession() as session:
         async with session.get(real_url, proxy=proxy) as resp:
             html: str = await resp.text()
-        return [i for i in parse_html(html)]
+        return list(parse_html(html))
 
 
 async def get_des(url: str):
@@ -42,7 +42,7 @@ async def get_des(url: str):
     for pic in image_data:
         msg = MessageSegment.image(file=pic[0]) + "\n"
         for i in pic[1:]:
-            msg = msg + f"{i}\n"
+            msg = f"{msg}{i}\n"
         yield msg
 
 

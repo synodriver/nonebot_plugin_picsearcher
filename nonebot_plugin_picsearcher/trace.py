@@ -91,11 +91,9 @@ async def get_des(url: str):
         yield msg
         return
     for pic in image_data:
-        msg = MessageSegment.image(
-            file=pic[
-                0]) + f"\n相似度:{pic[1]}%\n标题:{pic[6]['native'] + ' ' + pic[6]}\n第{pic[7]}集\nR18:{pic[3]}\n开始时间:{pic[4]}s\n结束时间{pic[5]}s"
-        yield msg
-    pass
+        yield MessageSegment.image(
+            file=pic[0]
+        ) + f"\n相似度:{pic[1]}%\n标题:{pic[6]['native'] + ' ' + pic[6]}\n第{pic[7]}集\nR18:{pic[3]}\n开始时间:{pic[4]}s\n结束时间{pic[5]}s"
 
 
 if __name__ == "__main__":
@@ -103,4 +101,3 @@ if __name__ == "__main__":
 
     data = asyncio.run(get_pic_from_url(
         "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606681978562&di=6d6c90aef5ff1f9f8915bbc2e18e3c98&imgtype=0&src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202011%2F15%2F20201115190356_c5b95.thumb.1000_0.jpg"))
-    pass
