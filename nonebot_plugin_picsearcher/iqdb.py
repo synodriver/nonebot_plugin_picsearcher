@@ -70,7 +70,7 @@ async def get_des(url: str):
         yield msg
         return
     for pic in image_data:
-        msg = MessageSegment.image(file=pic[0]) + f"\n{pic[1]}\n"
+        msg = f"{MessageSegment.image(file=pic[0])}\n{pic[1]}\n"
         for i in pic[2]:
-            msg = msg + f"{i}\n"
+            msg = f"{msg}{i}\n"
         yield msg
