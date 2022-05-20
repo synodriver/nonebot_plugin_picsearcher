@@ -18,7 +18,7 @@
 - 通过 pip 从 [PyPI](https://pypi.org/project/nonebot_plugin_picsearcher/) 安装
 
 ``` {.sourceCode .bash}
-pip install nonebot-plugin-picsearcher==0.1.6rc2
+pip install nonebot-plugin-picsearcher
 ```
 
 - 在 nonebot2 项目中设置 load_plugin()
