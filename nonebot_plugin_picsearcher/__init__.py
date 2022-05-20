@@ -55,7 +55,7 @@ setu = on_command("搜图", aliases={"search"}, rule=to_me())
 
 
 @setu.handle()
-async def handle_first_receive(event: MessageEvent, state: T_State = State(), setu: Message = CommandArg()):
+async def handle_first_receive(event: MessageEvent, state: T_State, setu: Message = CommandArg()):
     if setu:
         state["setu"] = setu
 
