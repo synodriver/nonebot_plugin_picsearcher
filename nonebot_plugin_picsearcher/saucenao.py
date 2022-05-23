@@ -30,20 +30,35 @@ def parse_html(html: str):
     selector = fromstring(html)
     for tag in selector.xpath('//div[@class="result"]/table'):
         pic_url = tag.xpath('./tr/td/div/a/img/@src')
-        pic_url = pic_url[0] if pic_url else None
+        if pic_url:
+            pic_url = pic_url[0]
+        else:
+            pic_url = None  # 相似度
         xsd: List[str] = tag.xpath(
             './tr/td[@class="resulttablecontent"]/div[@class="resultmatchinfo"]/div[@class="resultsimilarityinfo"]/text()')
-        xsd = xsd[0] if xsd else "没有写"
+        if xsd:
+            xsd = xsd[0]
+        else:
+            xsd = "没有写"  # 相似度
         title: List[str] = tag.xpath(
             './tr/td[@class="resulttablecontent"]/div[@class="resultcontent"]/div[@class="resulttitle"]/strong/text()')
-        title = title[0] if title else "没有写"
+        if title:
+            title = title[0]
+        else:
+            title = "没有写"  # 标题
         # pixiv id
         pixiv_id: List[str] = tag.xpath(
             './tr/td[@class="resulttablecontent"]/div[@class="resultcontent"]/div[@class="resultcontentcolumn"]/a[1]/@href')
-        pixiv_id = pixiv_id[0] if pixiv_id else "没有说"
+        if pixiv_id:
+            pixiv_id = pixiv_id[0]
+        else:
+            pixiv_id = "没有说"
         member: List[str] = tag.xpath(
             './tr/td[@class="resulttablecontent"]/div[@class="resultcontent"]/div[@class="resultcontentcolumn"]/a[2]/@href')
-        member = member[0] if member else "没有说"
+        if member:
+            member = member[0]
+        else:
+            member = "没有说"
         yield pic_url, xsd, title, pixiv_id, member
 
 
@@ -61,7 +76,7 @@ async def get_pic_from_url(url: str):
                        filename="blob")
         async with session.post("https://saucenao.com/search.php", data=data, headers=header, proxy=proxy) as res:
             html = await res.text()
-            image_data = list(parse_html(html))
+            image_data = [each for each in parse_html(html)]
     return image_data
 
 
@@ -72,6 +87,7 @@ async def get_des(url: str):
         yield msg
         return
     for pic in image_data:
-        yield MessageSegment.image(
-            file=pic[0]
-        ) + f"\n相似度:{pic[1]}\n标题:{pic[2]}\npixivid:{pic[3]}\nmember:{pic[4]}\n"
+        msg = MessageSegment.image(
+            file=pic[0]) + f"\n相似度:{pic[1]}\n标题:{pic[2]}\npixivid:{pic[3]}\nmember:{pic[4]}\n"
+        yield msg
+    pass

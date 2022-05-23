@@ -32,7 +32,7 @@ def parse_html(html: str):
         similarity = tag.xpath('./tr[last()]/td/text()')[0]  # 相似度
         href: List[str] = tag.xpath('./tr/td/a/@href')  # 第一个href
         href.extend(tag.xpath('./tr/td/span/a/@href'))  # 第二个  可能是空
-        href = list(map(lambda x: x if x.startswith("https") else f"https:{x}", href))
+        href = list(map(lambda x: "https:" + x if not x.startswith("https") else x, href))
         yield pic_url, similarity, href
 
 
@@ -55,7 +55,8 @@ async def get_pic_from_url(url: str):
         data.add_field(name="url", value="")
         async with session.post("http://iqdb.org/", data=data, headers=headers, proxy=proxy) as res:
             html = await res.text()
-        return list(parse_html(html))
+        return [i for i in parse_html(html)]
+    pass
 
 
 async def get_des(url: str):

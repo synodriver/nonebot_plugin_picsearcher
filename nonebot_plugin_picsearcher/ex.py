@@ -52,7 +52,8 @@ def parse_html(html: str):
     hrefs = selector.xpath('//td[@class="gl3c glname"]/a/@href')
     names = selector.xpath('//td[@class="gl3c glname"]/a/div[1]/text()')
     pics = selector.xpath('//tr/td[@class="gl2c"]/div[@class="glthumb"]/div[1]/img/@src')  # 缩略图
-    yield from zip(names, hrefs, pics)
+    for name, href, pic in zip(names, hrefs, pics):
+        yield name, href, pic
 
 
 async def get_pic_from_url(url: str):
@@ -72,7 +73,7 @@ async def get_pic_from_url(url: str):
         data.add_field(name="fs_similar", value="on")
         async with session.post(target, data=data, headers=headers, proxy=proxy) as res:
             html = await res.text()
-        return list(parse_html(html))
+        return [i for i in parse_html(html)]
 
 
 async def get_content_from_url(url: str):
@@ -84,7 +85,7 @@ async def get_content_from_url(url: str):
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(url, headers=headers) as resp:
-                return f"base64://{b64encode(await resp.read()).decode()}"
+                return "base64://" + b64encode(await resp.read()).decode()
     except aiohttp.client_exceptions.InvalidURL:
         return url
 
