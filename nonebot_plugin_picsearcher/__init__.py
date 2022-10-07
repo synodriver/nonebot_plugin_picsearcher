@@ -6,7 +6,7 @@ import json
 from aiohttp.client_exceptions import ClientError
 
 from nonebot import get_driver
-from nonebot.params import State, ArgPlainText, Arg, CommandArg
+from nonebot.params import ArgPlainText, Arg, CommandArg
 from nonebot.plugin import on_command, on_message
 from nonebot.rule import to_me
 from nonebot.adapters.onebot.v11 import Bot, MessageEvent, GroupMessageEvent, PrivateMessageEvent, Message
@@ -113,7 +113,7 @@ async def get_setu(bot: Bot,
 pic_map: Dict[str, str] = {}  # 保存这个群的上一张色图 {"123456":"http://xxx"}
 
 
-async def check_pic(bot: Bot, event: MessageEvent, state: T_State = State()) -> bool:
+async def check_pic(bot: Bot, event: MessageEvent, state: T_State) -> bool:
     if isinstance(event, MessageEvent):
         for msg in event.message:
             if msg.type == "image":
@@ -127,7 +127,7 @@ notice_pic = on_message(check_pic, block=False, priority=record_priority)
 
 
 @notice_pic.handle()
-async def handle_pic(event: GroupMessageEvent, state: T_State = State()):
+async def handle_pic(event: GroupMessageEvent, state: T_State):
     try:
         group_id: str = str(event.group_id)
         pic_map.update({group_id: state["url"]})
