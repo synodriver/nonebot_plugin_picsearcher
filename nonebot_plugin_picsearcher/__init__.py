@@ -137,7 +137,7 @@ async def handle_pic(event: GroupMessageEvent, state: T_State):
         pass
 
 
-previous = on_command("上一张图是什么", aliases={"上一张", "这是什么"}, rule=to_me())
+previous = on_command("上一张图是什么", aliases={"上一张", "这是什么"})
 
 
 @previous.handle()
@@ -151,7 +151,6 @@ async def handle_previous(bot: Bot, event: GroupMessageEvent):
         else:
             msgs: Message = sum(
                 [msg if isinstance(msg, Message) else Message(msg) async for msg in get_des(url, "nao")])
-            dict_data = json.loads(json.dumps(msgs, cls=DataclassEncoder))
             await bot.send_group_forward_msg(group_id=event.group_id,
                                              messages=[
                                                  {
@@ -160,11 +159,12 @@ async def handle_previous(bot: Bot, event: GroupMessageEvent):
                                                          "name": event.sender.nickname,
                                                          "uin": event.user_id,
                                                          "content": [
-                                                             content
+                                                             {"type": seg.type,
+                                                              "data": seg.data}
                                                          ]
                                                      }
                                                  }
-                                                 for content in dict_data
+                                                 for msg in msgs for seg in msg
                                              ]
                                              )
     except (IndexError, ClientError):
