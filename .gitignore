@@ -8,3 +8,5 @@
 *.so
 *.dll
 *.exe
+*.env
+bot.py

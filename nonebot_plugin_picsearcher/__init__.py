@@ -8,7 +8,7 @@ from aiohttp.client_exceptions import ClientError
 from nonebot import get_driver
 from nonebot.params import ArgPlainText, Arg, CommandArg
 from nonebot.plugin import on_command, on_message
-from nonebot.rule import to_me
+from nonebot.rule import to_me, Rule
 from nonebot.adapters.onebot.v11 import Bot, MessageEvent, GroupMessageEvent, PrivateMessageEvent, Message
 from nonebot.typing import T_State
 from nonebot.utils import DataclassEncoder
@@ -24,6 +24,7 @@ from .utils import limiter
 
 global_config = get_driver().config
 record_priority = getattr(global_config, "record_priority", 99)
+
 
 async def get_des(url: str, mode: str):
     """
@@ -82,9 +83,9 @@ async def get_setu(bot: Bot,
                 async for msg in limiter(get_des(url, mod), getattr(bot.config, "search_limit", None) or 2):
                     await bot.send(event=event, message=msg)
             else:
-                msgs: Message = sum(
-                    [msg if isinstance(msg, Message) else Message(msg) async for msg in get_des(url, mod)])
-                dict_data = json.loads(json.dumps(msgs, cls=DataclassEncoder))
+                msgs = [msg if isinstance(msg, Message) else Message(msg) async for msg in get_des(url, mod)]
+                # msgs: Message = sum(msgs)
+                # dict_data = json.loads(json.dumps(msgs, cls=DataclassEncoder))
                 await bot.send_group_forward_msg(group_id=event.group_id,
                                                  messages=[
                                                      {
@@ -93,11 +94,12 @@ async def get_setu(bot: Bot,
                                                              "name": event.sender.nickname,
                                                              "uin": event.user_id,
                                                              "content": [
-                                                                 content
+                                                                 {"type": seg.type,
+                                                                  "data": seg.data}
                                                              ]
                                                          }
                                                      }
-                                                     for content in dict_data
+                                                     for msg in msgs for seg in msg
                                                  ]
                                                  )
 
@@ -135,7 +137,7 @@ async def handle_pic(event: GroupMessageEvent, state: T_State):
         pass
 
 
-previous = on_command("上一张图是什么", aliases={"上一张", "这是什么"})
+previous = on_command("上一张图是什么", aliases={"上一张", "这是什么"}, rule=to_me())
 
 
 @previous.handle()
