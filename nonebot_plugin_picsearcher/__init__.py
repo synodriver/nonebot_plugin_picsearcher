@@ -1,26 +1,30 @@
 # -*- coding: utf-8 -*-
+import json
 import traceback
 from typing import Dict
-import json
 
 from aiohttp.client_exceptions import ClientError
-
 from nonebot import get_driver
-from nonebot.params import ArgPlainText, Arg, CommandArg
+from nonebot.adapters.onebot.v11 import (
+    Bot,
+    GroupMessageEvent,
+    Message,
+    MessageEvent,
+    PrivateMessageEvent,
+)
+from nonebot.params import Arg, ArgPlainText, CommandArg
 from nonebot.plugin import on_command, on_message
-from nonebot.rule import to_me, Rule
-from nonebot.adapters.onebot.v11 import Bot, MessageEvent, GroupMessageEvent, PrivateMessageEvent, Message
+from nonebot.rule import Rule, to_me
 from nonebot.typing import T_State
 from nonebot.utils import DataclassEncoder
 
+from .ascii2d import get_des as get_des_asc
 from .ex import get_des as get_des_ex
 from .iqdb import get_des as get_des_iqdb
 from .saucenao import get_des as get_des_sau
-from .ascii2d import get_des as get_des_asc
 from .trace import get_des as get_des_trace
-from .yandex import get_des as get_des_yandex
-
 from .utils import limiter
+from .yandex import get_des as get_des_yandex
 
 global_config = get_driver().config
 record_priority = getattr(global_config, "record_priority", 99)
@@ -56,7 +60,9 @@ setu = on_command("搜图", aliases={"search"}, rule=to_me())
 
 
 @setu.handle()
-async def handle_first_receive(event: MessageEvent, state: T_State, setu: Message = CommandArg()):
+async def handle_first_receive(
+    event: MessageEvent, state: T_State, setu: Message = CommandArg()
+):
     if setu:
         state["setu"] = setu
 
@@ -67,10 +73,12 @@ async def get_func():
 
 
 @setu.got("setu", prompt="图呢？")
-async def get_setu(bot: Bot,
-                   event: MessageEvent,
-                   mod: str = ArgPlainText("mod"),
-                   msg: Message = Arg("setu")):
+async def get_setu(
+    bot: Bot,
+    event: MessageEvent,
+    mod: str = ArgPlainText("mod"),
+    msg: Message = Arg("setu"),
+):
     """
     发现没有的时候要发问
     :return:
@@ -79,29 +87,35 @@ async def get_setu(bot: Bot,
         if msg[0].type == "image":
             await bot.send(event=event, message="正在处理图片")
             url = msg[0].data["url"]  # 图片链接
-            if not getattr(bot.config, "risk_control", None) or isinstance(event, PrivateMessageEvent):  # 安全模式
-                async for msg in limiter(get_des(url, mod), getattr(bot.config, "search_limit", None) or 2):
+            if not getattr(bot.config, "risk_control", None) or isinstance(
+                event, PrivateMessageEvent
+            ):  # 安全模式
+                async for msg in limiter(
+                    get_des(url, mod), getattr(bot.config, "search_limit", None) or 2
+                ):
                     await bot.send(event=event, message=msg)
             else:
-                msgs = [msg if isinstance(msg, Message) else Message(msg) async for msg in get_des(url, mod)]
+                msgs = [
+                    msg if isinstance(msg, Message) else Message(msg)
+                    async for msg in get_des(url, mod)
+                ]
                 # msgs: Message = sum(msgs)
                 # dict_data = json.loads(json.dumps(msgs, cls=DataclassEncoder))
-                await bot.send_group_forward_msg(group_id=event.group_id,
-                                                 messages=[
-                                                     {
-                                                         "type": "node",
-                                                         "data": {
-                                                             "name": event.sender.nickname,
-                                                             "uin": event.user_id,
-                                                             "content": [
-                                                                 {"type": seg.type,
-                                                                  "data": seg.data}
-                                                             ]
-                                                         }
-                                                     }
-                                                     for msg in msgs for seg in msg
-                                                 ]
-                                                 )
+                await bot.send_group_forward_msg(
+                    group_id=event.group_id,
+                    messages=[
+                        {
+                            "type": "node",
+                            "data": {
+                                "name": event.sender.nickname,
+                                "uin": event.user_id,
+                                "content": [{"type": seg.type, "data": seg.data}],
+                            },
+                        }
+                        for msg in msgs
+                        for seg in msg
+                    ],
+                )
 
             # image_data: List[Tuple] = await get_pic_from_url(url)
             await setu.finish("hso")
@@ -146,27 +160,32 @@ async def handle_previous(bot: Bot, event: GroupMessageEvent):
     try:
         url: str = pic_map[str(event.group_id)]
         if not getattr(bot.config, "risk_control", None):  # 安全模式
-            async for msg in limiter(get_des(url, "nao"), getattr(bot.config, "search_limit", None) or 2):
+            async for msg in limiter(
+                get_des(url, "nao"), getattr(bot.config, "search_limit", None) or 2
+            ):
                 await bot.send(event=event, message=msg)
         else:
             msgs: Message = sum(
-                [msg if isinstance(msg, Message) else Message(msg) async for msg in get_des(url, "nao")])
-            await bot.send_group_forward_msg(group_id=event.group_id,
-                                             messages=[
-                                                 {
-                                                     "type": "node",
-                                                     "data": {
-                                                         "name": event.sender.nickname,
-                                                         "uin": event.user_id,
-                                                         "content": [
-                                                             {"type": seg.type,
-                                                              "data": seg.data}
-                                                         ]
-                                                     }
-                                                 }
-                                                 for msg in msgs for seg in msg
-                                             ]
-                                             )
+                [
+                    msg if isinstance(msg, Message) else Message(msg)
+                    async for msg in get_des(url, "nao")
+                ]
+            )
+            await bot.send_group_forward_msg(
+                group_id=event.group_id,
+                messages=[
+                    {
+                        "type": "node",
+                        "data": {
+                            "name": event.sender.nickname,
+                            "uin": event.user_id,
+                            "content": [{"type": seg.type, "data": seg.data}],
+                        },
+                    }
+                    for msg in msgs
+                    for seg in msg
+                ],
+            )
     except (IndexError, ClientError):
         await bot.send(event, traceback.format_exc())
         await previous.finish("参数错误")

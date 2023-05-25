@@ -15,15 +15,12 @@ async def limiter(gen: AsyncGenerator, limit: int):
 if __name__ == "__main__":
     import asyncio
 
-
     async def test():
         for i in range(10):
             yield i
 
-
     async def main():
         async for i in limiter(test(), 5):
             print(i)
-
 
     asyncio.run(main())
