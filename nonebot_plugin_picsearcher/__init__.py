@@ -18,6 +18,7 @@ from nonebot.rule import Rule, to_me
 from nonebot.typing import T_State
 from nonebot.utils import DataclassEncoder
 
+from .animedb import get_des as get_des_anime
 from .ascii2d import get_des as get_des_asc
 from .ex import get_des as get_des_ex
 from .iqdb import get_des as get_des_iqdb
@@ -50,6 +51,9 @@ async def get_des(url: str, mode: str):
             yield msg
     elif mode.startswith("asc"):
         async for msg in get_des_asc(url):
+            yield msg
+    elif mode.startswith("anime"):
+        async for msg in get_des_anime(url):
             yield msg
     else:
         async for msg in get_des_sau(url):
