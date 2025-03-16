@@ -23,9 +23,9 @@ headers = {
     "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
     # "Content-Type": "multipart/form-data; boundary=WebAppBoundary",
     "cache-control": "no-cache",
-    "origin": "https://ai.animedb.cn",
+    "origin": "https://api.animetrace.com",
     "pragma": "no-cache",
-    "referer": "https://ai.animedb.cn/",
+    "referer": "https://api.animetrace.com/",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36",
 }
 
@@ -36,7 +36,8 @@ async def get_pic_from_url(url: str):
             content = await resp1.read()
     async with httpx.AsyncClient() as session:
         resp = await session.post(
-            "https://aiapiv2.animedb.cn/ai/api/detect?force_one=1&model=anime",  # fuck fuck fuck, only httpx can pass waf
+            "https://api.animetrace.com/v1/search",  # fuck fuck fuck, only httpx can pass waf
+            data={"model": "anime_model_lovelive", "ai_detect": 1, "is_multi": 1},
             files={"image": ("test.png", content, "image/png")},
             headers=headers,
         )
@@ -49,9 +50,13 @@ async def get_des(url: str):
         msg: str = "找不到高相似度的"
         yield msg
         return
-    for pic in image_data["data"][0]["char"]:
-        msg = MessageSegment.text(f"动漫名:{pic['cartoonname']}，人物:{pic['name']}, ")
-        yield msg
+    # for pic in image_data["data"][0]["char"]:
+    #     msg = MessageSegment.text(f"动漫名:{pic['cartoonname']}，人物:{pic['name']}, ")
+    #     yield msg
+    for data in image_data["data"]:
+        for ch in data["character"]:
+            msg = MessageSegment.text(f"动漫名:{ch['work']}，人物:{ch['character']}, ")
+            yield msg
 
 
 if __name__ == "__main__":
