@@ -2,7 +2,7 @@
 import io
 from typing import List, Tuple
 
-import aiohttp
+import aiohttp,httpx
 from lxml.html import fromstring
 from nonebot.adapters.onebot.v11 import MessageSegment
 
@@ -82,8 +82,9 @@ async def get_pic_from_url(url: str):
     :return:
     """
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            content = io.BytesIO(await resp.read())
+        async with httpx.AsyncClient(verify=True) as client:
+            response = await client.get(url)
+            content = io.BytesIO(response.content)
         data = aiohttp.FormData()  # boundary="----WebKitFormBoundaryPpuR3EZ1Ap2pXv8W"
         data.add_field(
             name="file", value=content, content_type="image/png", filename="blob"

@@ -3,7 +3,7 @@ import io
 from base64 import b64encode
 from typing import List, Tuple
 
-import aiohttp
+import aiohttp,httpx
 import nonebot
 from aiohttp.client_exceptions import InvalidURL
 from lxml.html import fromstring
@@ -66,8 +66,9 @@ async def get_pic_from_url(url: str):
     :return:
     """
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            content = io.BytesIO(await resp.read())
+        async with httpx.AsyncClient(verify=True) as client:
+            response = await client.get(url)
+            content = io.BytesIO(response.content)
             # Content_Length = resp.content_length
         data = FormData(boundary="----WebKitFormBoundaryB0NrMSYMfjY5r0l1")
         data.add_field(

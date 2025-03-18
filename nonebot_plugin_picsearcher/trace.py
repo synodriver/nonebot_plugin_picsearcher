@@ -3,7 +3,7 @@ from base64 import b64encode
 from copy import deepcopy
 from typing import List, Tuple
 
-import aiohttp
+import aiohttp,httpx
 from nonebot.adapters.onebot.v11 import MessageSegment
 
 # from .formdata import FormData
@@ -95,7 +95,9 @@ async def get_pic_from_url(url: str):
     """
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
-            content = io.BytesIO(await resp.read())
+            async with httpx.AsyncClient(verify=True) as client:
+                response = await client.get(url)
+                content = io.BytesIO(response.content)
         # with open("F:\elu.PNG", "rb") as f:
         #     content = io.BytesIO(f.read())
         data = aiohttp.FormData()  # boundary="----WebKitFormBoundary9cyjY8YBBN8SGdG4"

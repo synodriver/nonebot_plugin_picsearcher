@@ -32,8 +32,9 @@ headers = {
 
 async def get_pic_from_url(url: str):
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp1:
-            content = await resp1.read()
+        async with httpx.AsyncClient(verify=True) as client:
+            response = await client.get(url)
+            content = io.BytesIO(response.content)
     async with httpx.AsyncClient() as session:
         resp = await session.post(
             "https://api.animetrace.com/v1/search",  # fuck fuck fuck, only httpx can pass waf

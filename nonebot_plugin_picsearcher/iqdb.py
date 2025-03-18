@@ -4,7 +4,7 @@ import io
 from typing import List, Tuple
 from urllib.parse import urljoin
 
-import aiohttp
+import aiohttp,httpx
 from lxml.html import fromstring
 from nonebot.adapters.onebot.v11 import MessageSegment
 
@@ -55,8 +55,9 @@ async def get_pic_from_url(url: str):
     :return:
     """
     async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            content = io.BytesIO(await resp.read())
+        async with httpx.AsyncClient(verify=True) as client:
+            response = await client.get(url)
+            content = io.BytesIO(response.content)
         data = aiohttp.FormData()  # boundary="----WebKitFormBoundaryuwjSiBcpPag4k159"
         data.add_field(name="MAX_FILE_SIZE", value="")
         for i in range(1, 7):
